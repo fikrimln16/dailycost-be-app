@@ -19,103 +19,431 @@ const storage = new Storage({
   keyFilename: path.join(__dirname, 'keyfile.json'),
 });
 
-
-router.get('/catatan', verifyToken, (req, res) => {
-  
-    db.query('SELECT * FROM catatan', (error, results) => {
-      if (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Terjadi kesalahan.' });
-      }
-      // if (results.length === 0) {
-      //   return res.status(401).json({ message: 'Data Tidak ada' });
-      // }
-      return res.status(200).json({
-        message : 'berhasil',
-        data : results
-      });
+/**
+ * @swagger
+ * /api/catatan:
+ *   get:
+ *     summary: Mendapatkan daftar catatan
+ *     tags:
+ *       - Catatan
+ *     description: Endpoint untuk mendapatkan daftar catatan
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Berhasil mendapatkan daftar catatan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       body:
+ *                         type: string
+ *                       date:
+ *                         type: string
+ *                         format: date
+ *                       user_id:
+ *                         type: integer
+ *                       image_url:
+ *                         type: string
+ *             example:
+ *               status: "Success"
+ *               message: "Berhasil Mengambil Catatan!"
+ *               data:
+ *                 - id: 1
+ *                   title: "Catatan Penting"
+ *                   body: "Ini adalah catatan penting"
+ *                   date: "2023-06-16"
+ *                   user_id: 73
+ *                   image_url: "https://storage.googleapis.com/dailycost-catatan-images/1623839930341-gambar.jpg"
+ *                 - id: 2
+ *                   title: "Catatan Harian"
+ *                   body: "Ini adalah catatan harian"
+ *                   date: "2023-06-17"
+ *                   user_id: 73
+ *                   image_url: "https://storage.googleapis.com/dailycost-catatan-images/1623840051892-gambar.jpg"
+ *       404:
+ *         description: Data catatan tidak ditemukan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       body:
+ *                         type: string
+ *                       date:
+ *                         type: string
+ *                         format: date
+ *                       user_id:
+ *                         type: integer
+ *                       image_url:
+ *                         type: string
+ *             example:
+ *               status: "Failed"
+ *               message: "Data tidak ada!"
+ *               data: []
+ *       500:
+ *         description: Terjadi kesalahan saat mendapatkan daftar catatan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: "Failed"
+ *               message: "Terjadi kesalahan."
+ */
+router.get('/catatan',  verifyToken, (req, res) => {
+  db.query('SELECT * FROM catatan', (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Terjadi kesalahan.' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ status: 'Data Tidak Ada', data: [] });
+    }
+    return res.status(200).json({
+      status: 'Success',
+      message: "Berhasil Mengambil Catatan!",
+      data: results
     });
-  }
-) 
+  });
+});
 
-router.get('/catatan/:id', verifyToken,  (req, res) => {
+/**
+ * @swagger
+ * /api/catatan:
+ *   post:
+ *     summary: Membuat catatan baru
+ *     description: Endpoint untuk membuat catatan baru
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Catatan
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               body:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               user_id:
+ *                 type: integer
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Catatan berhasil dibuat
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *             example:
+ *               status: "Success"
+ *               message: "Berhasil memasukkan catatan!"
+ *               data:
+ *                 url: https://storage.googleapis.com/dailycost-catatan-images/1686970383592-FIKRI.jpeg
+ *       400:
+ *         description: Gagal membuat catatan karena validasi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Mohon unggah file gambar!"
+ *       500:
+ *         description: Terjadi kesalahan saat membuat catatan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Terjadi kesalahan."
+ */
+router.post('/catatan', upload.single('file'), verifyToken, (req, res) => {
+  const { title, body, date, user_id }  = req.body;
+  const file = req.file;
+
+  const bucketName = 'dailycost-catatan-images';  
+        
+  if (!file) {
+    return res.status(400).json({
+      status: "Failed",
+      message: "Mohon unggah file gambar!",
+    });
+  } 
+
+  // Buat nama file baru tanpa spasi
+  const newFileName = Date.now() + '-' + file.originalname.replace(/\s+/g, '');
+
+  // buat instance bucket
+  const myBucket = storage.bucket(bucketName);
+  // upload gambar ke bucket
+  const blob = myBucket.file(newFileName); // gunakan nama file baru
+  const blobStream = blob.createWriteStream({
+    metadata: {
+      contentType: file.mimetype,
+    },
+  });
+
+  blobStream.on('error', (err) => {
+    console.error(err);
+    return res.status(500).json({
+      status: "Failed",
+      message: "Terjadi kesalahan!",
+    });
+  });
+      
+  var publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
+  blobStream.on('finish', () => {
+    // set public access untuk file
+    blob.makePublic().then(() => {
+      // dapatkan public link dari file
+      publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
+    });
+  });
+  blobStream.end(file.buffer);
+
+  db.query('INSERT INTO catatan VALUES(null, ?, ?, ?, ?, ?) ', [title, body, date, user_id, publicUrl], (error, results) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "Failed",
+        message: "Terjadi kesalahan!",
+      }); 
+    }
+    // if (results.length === 0) {
+    //   return res.status(401).json({ message: 'Data Tidak ada' });
+    // }
+    return res.status(200).json({
+      status: "Succes",
+      message : 'Berhasil memasukkan catatan!',
+      data : {url: publicUrl} 
+    });
+  });
+}
+)
+
+/**
+ * @swagger
+ * /api/catatan/{id}:
+ *   get:
+ *     summary: Mendapatkan catatan berdasarkan ID pengguna
+ *     tags: 
+ *       - Catatan
+ *     description: Endpoint untuk mendapatkan catatan berdasarkan ID pengguna
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID pengguna
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Berhasil mendapatkan catatan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       catatan_id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       body:
+ *                         type: string
+ *                       created_at:
+ *                         type: string
+ *                         format: date
+ *                       user_id:
+ *                         type: integer
+ *                       url:
+ *                         type: string
+ *             example:
+ *               status: Succes
+ *               message: "Berhasil mengambil catatan dengan user id : 73"
+ *               data:
+ *                 - catatan_id: 1
+ *                   title: "Catatan 1"
+ *                   body: "Ini adalah catatan 1"
+ *                   created_at: "2023-06-16"
+ *                   user_id: 73
+ *                   url: "https://storage.googleapis.com/dailycost-catatan-images/catatan1.jpg"
+ *                 - catatan_id: 2
+ *                   title: "Catatan 2"
+ *                   body: "Ini adalah catatan 2"
+ *                   created_at: "2023-06-15"
+ *                   user_id: 73
+ *                   url: "https://storage.googleapis.com/dailycost-catatan-images/catatan2.jpg"
+ *       401:
+ *         description: Data catatan tidak ditemukan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Data Tidak Ada"
+ *               data : []
+ *       500:
+ *         description: Terjadi kesalahan saat mendapatkan catatan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Terjadi kesalahan pada server."
+ */
+router.get('/catatan/:id', verifyToken, (req, res) => {
     const id  = req.params.id;
   
     db.query('SELECT catatan_id, title, body, DATE_FORMAT(created_at, "%d %M %Y") AS created_at, user_id, url FROM catatan WHERE user_id = ? ORDER BY catatan_id DESC', [id], (error, results) => {
       if (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Terjadi kesalahan.' });
+        return res.status(404).json({
+          status: "Failed",
+          message: "Terjadi kesalahan pada server",
+        });
       }
-      // if (results.length === 0) {
-      //   return res.status(401).json({ message: 'Data Tidak ada' });
-      // }
+      if (results.length === 0) {
+        return res.status(404).json({
+          status: "Failed",
+          message: "Data Tidak Ada",
+          data: results
+        });
+      }
       return res.status(200).json({
-        message : 'berhasil',
+        status: "Succes",
+        message : `Berhasil mengambil catatan dengan user id : ${id}`,
         data : results
       });
     });
   }
 )
 
-router.post('/catatan', upload.single('file'), verifyToken, (req, res) => {
-    const { title, body, date, user_id }  = req.body;
-    const file = req.file;
-
-    const bucketName = 'dailycost-catatan-images';  
-          
-    if (!file) {
-      res.status(400).send('Mohon unggah file gambar!');
-      return;
-    }
-
-    // Buat nama file baru tanpa spasi
-    const newFileName = Date.now() + '-' + file.originalname.replace(/\s+/g, '');
-
-    // buat instance bucket
-    const myBucket = storage.bucket(bucketName);
-    // upload gambar ke bucket
-    const blob = myBucket.file(newFileName); // gunakan nama file baru
-    const blobStream = blob.createWriteStream({
-      metadata: {
-        contentType: file.mimetype,
-      },
-    });
-
-    blobStream.on('error', (err) => {
-      console.error(err);
-      res.status(500).send('Terjadi kesalahan saat mengunggah gambar.');
-    });
-        
-    var publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
-    blobStream.on('finish', () => {
-      // set public access untuk file
-      blob.makePublic().then(() => {
-        // dapatkan public link dari file
-        publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
-      });
-    });
-    blobStream.end(file.buffer);
 
 
-    db.query('INSERT INTO catatan VALUES(null, ?, ?, ?, ?, ?) ', [title, body, date, user_id, publicUrl], (error, results) => {
-      if (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Terjadi kesalahan.' });
-      }
-      // if (results.length === 0) {
-      //   return res.status(401).json({ message: 'Data Tidak ada' });
-      // }
-      return res.status(200).json({
-        message : 'berhasil',
-        url : publicUrl,
-        data : results
-      });
-    });
-  }
-)
+/**
+ * @swagger
+ * /api/upload/image:
+ *   post:
+ *     summary: Mengunggah gambar
+ *     description: Endpoint untuk mengunggah gambar
+ *     tags:
+ *       - Catatan
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Gambar berhasil diunggah
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 publicUrl:
+ *                   type: string
+ *             example:
+ *               publicUrl: "https://storage.googleapis.com/dailycost-catatan-images/gambar.jpg"
+ *       400:
+ *         description: Gagal mengunggah gambar karena validasi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Mohon unggah file gambar!"
+ *       500:
+ *         description: Terjadi kesalahan saat mengunggah gambar
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Terjadi kesalahan pada server saat mengunggah gambar."
+ */
 
 // tentukan nama bucket
-
 router.post('/upload/image', upload.single('image'), (req, res, next) => {
   const bucketName = 'dailycost-catatan-images';  
   const file = req.file;

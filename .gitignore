@@ -1,0 +1,30 @@
+# Dependencies
+/node_modules
+
+# Build output
+/dist
+/build
+
+# Environment variables
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+error.log
+logs
+
+# IDE specific files
+.idea
+.vscode
+*.sublime-*
+*.swp
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+.prettierrc
+
+/routes/catatan/keyfile.json

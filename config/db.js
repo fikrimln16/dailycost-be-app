@@ -1,10 +1,10 @@
-const mysql = require('mysql');
+const mysql = require("mysql");
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'dailycos_fikri',
-    password: '@Fikrimln16',
-    database: 'dailycos_api'
+  host: "localhost",
+  user: "root",
+  // password: '@Fikrimln16',
+  database: "daily-cost",
 });
 
 module.exports = db;
