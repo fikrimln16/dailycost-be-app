@@ -11,7 +11,7 @@ const db = require("../../config/db");
  *     tags:
  *       - Pengeluaran
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -51,17 +51,10 @@ const db = require("../../config/db");
  *                       type: number
  *                     pengeluaran_cash:
  *                       type: number
- *       401:
- *         description: Data tidak ada
  *       500:
  *         description: Terjadi kesalahan saat mengambil daftar pengeluaran
- *     securityDefinitions:
- *       BearerAuth:
- *         type: apiKey
- *         name: Authorization
- *         in: header
  */
-router.get("/pengeluaran/:id", (req, res) => {
+router.get("/pengeluaran/:id", verifyToken, (req, res) => {
 	const id = req.params.id;
 
 	db.query(
@@ -76,12 +69,12 @@ router.get("/pengeluaran/:id", (req, res) => {
 				});
 			}
 
-			if (results.length === 0) {
-				return res.status(401).json({
-					status: "Failed",
-					message: "Data Tidak ada",
-				});
-			}
+			// if (results.length === 0) {
+			// 	return res.status(401).json({
+			// 		status: "Failed",
+			// 		message: "Data Tidak ada",
+			// 	});
+			// }
 
 			let totalPembayaranGOPAY = 0;
 			let totalPembayaranREKENING = 0;
@@ -122,7 +115,7 @@ router.get("/pengeluaran/:id", (req, res) => {
  *     tags:
  *       - Pengeluaran
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -153,13 +146,8 @@ router.get("/pengeluaran/:id", (req, res) => {
  *         description: Data tidak ada
  *       500:
  *         description: Terjadi kesalahan saat mengambil data chart pengeluaran
- *     securityDefinitions:
- *       BearerAuth:
- *         type: apiKey
- *         name: Authorization
- *         in: header
  */
-router.get("/pengeluaran/chart/:id", (req, res) => {
+router.get("/pengeluaran/chart/:id", verifyToken, (req, res) => {
 	const id = req.params.id;
 
 	db.query(
@@ -205,7 +193,7 @@ router.get("/pengeluaran/chart/:id", (req, res) => {
  *     tags:
  *       - Pengeluaran
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -267,13 +255,8 @@ router.get("/pengeluaran/chart/:id", (req, res) => {
  *                       type: number
  *       500:
  *         description: Terjadi kesalahan saat mengambil daftar pengeluaran
- *     securityDefinitions:
- *       BearerAuth:
- *         type: apiKey
- *         name: Authorization
- *         in: header
  */
-router.get("/pengeluaran/:id/list/:bulan/:tahun", (req, res) => {
+router.get("/pengeluaran/:id/list/:bulan/:tahun", verifyToken, (req, res) => {
 	const id = req.params.id;
 	const bulan = req.params.bulan;
 	const tahun = req.params.tahun;
@@ -343,7 +326,7 @@ router.get("/pengeluaran/:id/list/:bulan/:tahun", (req, res) => {
  *     tags:
  *       - Pengeluaran
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -401,13 +384,8 @@ router.get("/pengeluaran/:id/list/:bulan/:tahun", (req, res) => {
  *                       type: string
  *       500:
  *         description: Terjadi kesalahan saat mengambil daftar pengeluaran
- *     securityDefinitions:
- *       BearerAuth:
- *         type: apiKey
- *         name: Authorization
- *         in: header
  */
-router.get("/pengeluaran/:id/list/:tanggal", (req, res) => {
+router.get("/pengeluaran/:id/list/:tanggal", verifyToken, (req, res) => {
 	const id = req.params.id;
 	const tanggal = req.params.tanggal;
 	db.query(

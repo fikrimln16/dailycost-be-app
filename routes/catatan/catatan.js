@@ -369,13 +369,13 @@ router.get('/catatan/:id', verifyToken, (req, res) => {
           message: "Terjadi kesalahan pada server",
         });
       }
-      if (results.length === 0) {
-        return res.status(404).json({
-          status: "Failed",
-          message: "Data Tidak Ada",
-          data: results
-        });
-      }
+    //   if (results.length === 0) {
+    //     return res.status(404).json({
+    //       status: "Failed",
+    //       message: "Data Tidak Ada",
+    //       data: results
+    //     });
+    //   }
       return res.status(200).json({
         status: "Succes",
         message : `Berhasil mengambil catatan dengan user id : ${id}`,

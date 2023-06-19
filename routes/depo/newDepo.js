@@ -97,7 +97,7 @@ const db = require('../../config/db')
  *               status: "Failed"
  *               message: "Terjadi kesalahan pada server."
  */
-router.post('/depo', (req, res) => {
+router.post('/depo', verifyToken, (req, res) => {
     const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
 
     db.query('INSERT INTO tabungan VALUES (?,?,?,?)', [id, uang_gopay, uang_cash, uang_rekening], (error, results) => {

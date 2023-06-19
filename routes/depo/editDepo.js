@@ -98,7 +98,7 @@ const db = require('../../config/db')
  *               status: "Failed"
  *               message: "Terjadi kesalahan pada server."
  */
-router.put('/depo', (req, res) => {
+router.put('/depo', verifyToken, (req, res) => {
     try {
         const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
         

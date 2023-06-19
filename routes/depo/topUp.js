@@ -97,7 +97,7 @@ const db = require('../../config/db')
  *               status: "Failed"
  *               message: "Terjadi kesalahan pada server."
  */
-router.post('/topup', (req, res) => {
+router.post('/topup', verifyToken, (req, res) => {
     const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
 
     db.query('SELECT uang_gopay, uang_cash, uang_rekening FROM tabungan WHERE id = ?', [id], (error, results) => {

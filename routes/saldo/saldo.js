@@ -11,7 +11,7 @@ const db = require("../../config/db");
  *     tags :
  *       - Saldo
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -48,7 +48,7 @@ const db = require("../../config/db");
  *         name: Authorization
  *         in: header
  */
-router.get("/saldo/:id", (req, res) => {
+router.get("/saldo/:id", verifyToken, (req, res) => {
 	const id = req.params.id;
 
 	db.query(
