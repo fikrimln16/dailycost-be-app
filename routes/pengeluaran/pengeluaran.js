@@ -142,8 +142,6 @@ router.get("/pengeluaran/:id", verifyToken, (req, res) => {
  *                       type: array
  *                       items:
  *                         type: number
- *       401:
- *         description: Data tidak ada
  *       500:
  *         description: Terjadi kesalahan saat mengambil data chart pengeluaran
  */
@@ -161,12 +159,12 @@ router.get("/pengeluaran/chart/:id", verifyToken, (req, res) => {
 				});
 			}
 
-			if (results.length === 0) {
-				return res.status(401).json({
-					status: "Failed",
-					message: `Data tidak ada!`,
-				});
-			}
+			// if (results.length === 0) {
+			// 	return res.status(401).json({
+			// 		status: "Failed",
+			// 		message: `Data tidak ada!`,
+			// 	});
+			// }
 
 			const formattedResults = results.map((result) => result.tanggal);
 			const formattedJumlah = results.map((result) => result.jumlah);
