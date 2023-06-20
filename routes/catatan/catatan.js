@@ -312,6 +312,8 @@ router.post('/catatan', upload.single('file'), verifyToken, (req, res) => {
  *                       created_at:
  *                         type: string
  *                         format: date
+ *                       created_at_epoch:
+ *                         type: integer
  *                       user_id:
  *                         type: integer
  *                       url:
@@ -324,27 +326,16 @@ router.post('/catatan', upload.single('file'), verifyToken, (req, res) => {
  *                   title: "Catatan 1"
  *                   body: "Ini adalah catatan 1"
  *                   created_at: "2023-06-16"
+ *                   created_at_epoch: 1682614800
  *                   user_id: 73
  *                   url: "https://storage.googleapis.com/dailycost-catatan-images/catatan1.jpg"
  *                 - catatan_id: 2
  *                   title: "Catatan 2"
  *                   body: "Ini adalah catatan 2"
  *                   created_at: "2023-06-15"
+ *                   created_at_epoch: 1682614800
  *                   user_id: 73
  *                   url: "https://storage.googleapis.com/dailycost-catatan-images/catatan2.jpg"
- *       401:
- *         description: Data catatan tidak ditemukan
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *             example:
- *               status: Failed
- *               message: "Data Tidak Ada"
- *               data : []
  *       500:
  *         description: Terjadi kesalahan saat mendapatkan catatan
  *         content:
@@ -361,10 +352,10 @@ router.post('/catatan', upload.single('file'), verifyToken, (req, res) => {
 router.get('/catatan/:id', verifyToken, (req, res) => {
     const id  = req.params.id;
   
-    db.query('SELECT catatan_id, title, body, DATE_FORMAT(created_at, "%d %M %Y") AS created_at, user_id, url FROM catatan WHERE user_id = ? ORDER BY catatan_id DESC', [id], (error, results) => {
+    db.query('SELECT catatan_id, title, body, DATE_FORMAT(created_at, "%d %M %Y") AS created_at, UNIX_TIMESTAMP(created_at) AS created_at_epoch, user_id, url FROM catatan WHERE user_id = ? ORDER BY catatan_id DESC', [id], (error, results) => {
       if (error) {
         console.error(error);
-        return res.status(404).json({
+        return res.status(500).json({
           status: "Failed",
           message: "Terjadi kesalahan pada server",
         });
