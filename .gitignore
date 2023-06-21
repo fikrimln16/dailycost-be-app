@@ -27,7 +27,7 @@ Thumbs.db
 
 .prettierrc
 
-/routes/catatan/keyfile.json
+/config/keyfile.json
 
 db_storage.sql
 dailycost.zip
