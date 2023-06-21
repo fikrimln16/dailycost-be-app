@@ -327,7 +327,7 @@ router.put("/catatan", verifyToken, putCatatanController);
  *               status: Failed
  *               message: "Terjadi kesalahan."
  */
-router.delete("/catatan", verifyToken, deleteCatatanController);
+router.delete("/catatan", deleteCatatanController);
 
 /**
  * @swagger

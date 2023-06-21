@@ -1,5 +1,5 @@
-const db = require("../../config/db"); // Impor file database.js
-const storage = require("../../config/storage")
+const storage = require("../../config/storage");
+const catatanModel = require("../../models/catatan");
 
 const postCatatan = (req, res) => {
 	const { title, body, date, user_id } = req.body;
@@ -35,38 +35,40 @@ const postCatatan = (req, res) => {
 		});
 	});
 
-	var publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
+	let publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
 	blobStream.on("finish", () => {
 		// set public access untuk file
 		blob.makePublic().then(() => {
 			// dapatkan public link dari file
 			publicUrl = `https://storage.googleapis.com/${bucketName}/${newFileName}`; // gunakan nama file baru
+
+			// Simpan catatan ke database menggunakan model
+			catatanModel.createCatatan(
+				title,
+				body,
+				date,
+				user_id,
+				publicUrl,
+				(error, catatanId) => {
+					if (error) {
+						console.error(error);
+						return res.status(500).json({
+							status: "Failed",
+							message: "Terjadi kesalahan!",
+						});
+					}
+
+					return res.status(200).json({
+						status: "Success",
+						message: "Berhasil memasukkan catatan!",
+						data: { user_id: user_id, catatan_id: catatanId, url: publicUrl },
+					});
+				}
+			);
 		});
 	});
+
 	blobStream.end(file.buffer);
-
-	db.query(
-		"INSERT INTO catatan VALUES(null, ?, ?, ?, ?, ?) ",
-		[title, body, date, user_id, publicUrl],
-		(error, results) => {
-			if (error) {
-				console.error(error);
-				return res.status(500).json({
-					status: "Failed",
-					message: "Terjadi kesalahan!",
-				});
-			}
-
-			const catatanId = results.insertId;
-
-			return res.status(200).json({
-				status: "Success",
-				message: "Berhasil memasukkan catatan!",
-				data: { user_id: user_id, catatan_id: catatanId, url: publicUrl },
-			});
-		}
-	);
 };
 
-
-module.exports = postCatatan
+module.exports = postCatatan;
