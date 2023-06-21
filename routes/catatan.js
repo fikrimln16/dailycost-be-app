@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const verifyToken = require("../../auth/verifyToken");
-const upload = require("../../config/multer")
+const verifyToken = require("../auth/verifyToken");
+const upload = require("../config/multer")
 
-const getCatatanController = require("../../controller/catatan/getCatatanController");
-const postCatatanController = require("../../controller/catatan/postCatatanController");
-const putCatatanController = require("../../controller/catatan/putCatatanController");
-const deleteCatatanController = require("../../controller/catatan/deleteCatatanController");
-const getCatatanByIdController = require("../../controller/catatan/getCatatanByIdController");
+const getCatatanController = require("../controller/catatan/getCatatanController");
+const postCatatanController = require("../controller/catatan/postCatatanController");
+const putCatatanController = require("../controller/catatan/putCatatanController");
+const deleteCatatanController = require("../controller/catatan/deleteCatatanController");
+const getCatatanByIdController = require("../controller/catatan/getCatatanByIdController");
 
 /**
  * @swagger
@@ -409,98 +409,5 @@ router.delete("/catatan", deleteCatatanController);
  */
 router.get("/catatan/:id", verifyToken, getCatatanByIdController);
 
-// /**
-//  * @swagger
-//  * /api/upload/image:
-//  *   post:
-//  *     summary: Mengunggah gambar
-//  *     description: Endpoint untuk mengunggah gambar
-//  *     tags:
-//  *       - Catatan
-//  *     requestBody:
-//  *       required: true
-//  *       content:
-//  *         multipart/form-data:
-//  *           schema:
-//  *             type: object
-//  *             properties:
-//  *               image:
-//  *                 type: string
-//  *                 format: binary
-//  *     responses:
-//  *       200:
-//  *         description: Gambar berhasil diunggah
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 publicUrl:
-//  *                   type: string
-//  *             example:
-//  *               publicUrl: "https://storage.googleapis.com/dailycost-catatan-images/gambar.jpg"
-//  *       400:
-//  *         description: Gagal mengunggah gambar karena validasi
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 message:
-//  *                   type: string
-//  *             example:
-//  *               status: Failed
-//  *               message: "Mohon unggah file gambar!"
-//  *       500:
-//  *         description: Terjadi kesalahan saat mengunggah gambar
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: object
-//  *               properties:
-//  *                 message:
-//  *                   type: string
-//  *             example:
-//  *               status: Failed
-//  *               message: "Terjadi kesalahan pada server saat mengunggah gambar."
-//  */
-
-// // tentukan nama bucket
-// router.post("/upload/image", upload.single("image"), (req, res, next) => {
-// 	const bucketName = "dailycost-catatan-images";
-// 	const file = req.file;
-
-// 	if (!file) {
-// 		res.status(400).send("Mohon unggah file gambar!");
-// 		return;
-// 	}
-
-// 	// buat instance bucket
-// 	const myBucket = storage.bucket(bucketName);
-
-// 	// upload gambar ke bucket
-// 	const blob = myBucket.file(file.originalname);
-// 	const blobStream = blob.createWriteStream({
-// 		metadata: {
-// 			contentType: file.mimetype,
-// 		},
-// 	});
-
-// 	blobStream.on("error", (err) => {
-// 		console.error(err);
-// 		res.status(500).send("Terjadi kesalahan saat mengunggah gambar.");
-// 	});
-
-// 	blobStream.on("finish", () => {
-// 		// set public access untuk file
-// 		blob.makePublic().then(() => {
-// 			// dapatkan public link dari file
-// 			const publicUrl = `https://storage.googleapis.com/${bucketName}/${file.originalname}`;
-// 			res.status(200).send({ publicUrl });
-// 		});
-// 	});
-
-// 	blobStream.end(file.buffer);
-// });
 
 module.exports = router;

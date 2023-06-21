@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const verifyToken = require("../../auth/verifyToken");
+const verifyToken = require("../auth/verifyToken");
 
-const belanjaController = require("../../controller/belanja/belanjaController")
+const belanjaController = require("../controller/belanja/belanjaController");
 
 /**
  * @swagger
  * /api/belanja:
  *   post:
  *     summary: Melakukan pembelian barang
- *     tags : 
+ *     tags :
  *       - Belanja
  *     description: Menginputkan informasi pembelian barang ke dalam database
  *     security:
@@ -98,6 +98,6 @@ const belanjaController = require("../../controller/belanja/belanjaController")
  *               status: Failed
  *               message: Terjadi kesalahan pada server saat melakukan pembelanjaan.
  */
-router.post("/belanja", verifyToken, belanjaController)
+router.post("/belanja", verifyToken, belanjaController);
 
 module.exports = router;
