@@ -10,10 +10,10 @@ const deleteCatatanController = require("../controller/catatan/deleteCatatanCont
 const getCatatanByIdController = require("../controller/catatan/getCatatanByIdController");
 
 
-router.get("/catatan", getCatatanController);
-router.post("/catatan",upload.single("file"),verifyToken,postCatatanController);
+router.get("/catatan", verifyToken, getCatatanController);
+router.post("/catatan",upload.single("file"), verifyToken, postCatatanController);
 router.put("/catatan", verifyToken, putCatatanController);
-router.delete("/catatan", deleteCatatanController);
+router.delete("/catatan", verifyToken,deleteCatatanController);
 router.get("/catatan/:id", verifyToken, getCatatanByIdController);
 
 
