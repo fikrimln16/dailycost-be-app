@@ -3,14 +3,14 @@ const storage = require("../config/storage")
 
 const catatanModel = {
 	getCatatan: (callback) => {
-		db.query("SELECT * FROM catatan", (error, results) => {
+		db.query("SELECT * FROM catatan", (error, results, statusCode) => {
 			if (error) {
-				return callback(error, null);
+				return callback(error, null, 500);
 			}
 			if (results.length === 0) {
-				return callback(null, []);
+				return callback(null, [], 200);
 			}
-			return callback(null, results);
+			return callback(null, results, 200);
 		});
 	},
 	createCatatan: (title, body, date, user_id, imageUrl, callback) => {
