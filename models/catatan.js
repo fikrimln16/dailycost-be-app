@@ -49,9 +49,9 @@ const catatanModel = {
       [user_id, catatan_id],
       (error, result) => {
         if (error) {
-          return callback(error, null);
+          return callback(error, null, 500);
         } else if (result.length === 0) {
-          return callback(null, 'Catatan tidak ditemukan');
+          return callback(null, 'Catatan tidak ditemukan', 500);
         } else {
           const url = result[0].url;
           db.query(
@@ -59,16 +59,16 @@ const catatanModel = {
             [user_id, catatan_id],
             (error, result) => {
               if (error) {
-                return callback(error, null);
+                return callback(error, null, 500);
               } else {
                 const fileName = url.substring(url.lastIndexOf('/') + 1);
                 const file = storage.bucket(bucketName).file(fileName);
                 file.delete()
                   .then(() => {
-                    return callback(null, 'Catatan berhasil dihapus');
+                    return callback(null, 'Berhasil menghapus catatan!', 200);
                   })
                   .catch((error) => {
-                    return callback(error, null);
+                    return callback(error, null, 500);
                   });
               }
             }
