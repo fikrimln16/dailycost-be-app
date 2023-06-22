@@ -31,13 +31,11 @@ const options = {
 	},
 	apis: [
 		"./routes/*.js",
-		"./routes/depo/*.js",
-		"./routes/pengeluaran/*.js",
-		"./routes/saldo/*.js",
 		"./routes/user/*.js",
 		"./controller/catatan/*.js",
 		"./controller/belanja/*.js",
-		"./controller/depo/*.js"
+		"./controller/depo/*.js",
+		"./controller/pengeluaran/*.js"
 	], // Ganti dengan jalur yang sesuai dengan file rute Anda
 };
 
@@ -47,7 +45,7 @@ const login = require("./routes/login");
 const register = require("./routes/register");
 const userRoutes = require("./routes/user/userRoutes");
 const belanja = require("./routes/belanja");
-const pengeluaran = require("./routes/pengeluaran/pengeluaran");
+const pengeluaran = require("./routes/pengeluaran");
 const catatan = require("./routes/catatan");
 const depo = require("./routes/depo")
 
