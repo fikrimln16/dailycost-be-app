@@ -60,7 +60,7 @@ router.get("/pengeluaran/:id", verifyToken, (req, res) => {
 	const id = req.params.id;
 
 	db.query(
-		'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran FROM pengeluaran WHERE user_id = ? ORDER BY pengeluaran_id DESC ',
+		'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE user_id = ? ORDER BY pengeluaran_id DESC ',
 		[id],
 		(error, results) => {
 			if (error) {
