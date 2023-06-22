@@ -7,9 +7,9 @@ const postDepoController = require("../controller/depo/postDepoController")
 const putDepoController = require("../controller/depo/putDepoController")
 const getSaldoController = require("../controller/depo/getSaldoController")
 
-router.post('/topup',  postTopUpController)
-router.post('/depo',  postDepoController)
-router.put('/depo', putDepoController)
-router.get("/saldo/:id", getSaldoController)
+router.post('/topup',  verifyToken, postTopUpController)
+router.post('/depo',  verifyToken, postDepoController)
+router.put('/depo', verifyToken, putDepoController)
+router.get("/saldo/:id", verifyToken, getSaldoController)
 
 module.exports = router
