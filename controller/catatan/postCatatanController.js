@@ -1,6 +1,81 @@
 const storage = require("../../config/storage");
 const catatanModel = require("../../models/catatan");
 
+/**
+ * @swagger
+ * /api/catatan:
+ *   post:
+ *     summary: Membuat catatan baru
+ *     description: Endpoint untuk membuat catatan baru
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Catatan
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               body:
+ *                 type: string
+ *               date:
+ *                 type: string
+ *                 format: date
+ *               user_id:
+ *                 type: integer
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Catatan berhasil dibuat
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: object
+ *             example:
+ *               status: "Success"
+ *               message: "Berhasil memasukkan catatan!"
+ *               data:
+ *                 user_id : 1
+ *                 catatan_id : 1
+ *                 url: https://storage.googleapis.com/dailycost-catatan-images/1686970383592-FIKRI.jpeg
+ *       400:
+ *         description: Gagal membuat catatan karena validasi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Mohon unggah file gambar!"
+ *       500:
+ *         description: Terjadi kesalahan saat membuat catatan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Terjadi kesalahan."
+ */
 const postCatatan = (req, res) => {
 	const { title, body, date, user_id } = req.body;
 	const file = req.file;
@@ -49,16 +124,15 @@ const postCatatan = (req, res) => {
 				date,
 				user_id,
 				publicUrl,
-				(error, catatanId) => {
+				(error, catatanId, statusCode) => {
 					if (error) {
-						console.error(error);
-						return res.status(500).json({
+						return res.status(statusCode).json({
 							status: "Failed",
 							message: "Terjadi kesalahan!",
 						});
 					}
 
-					return res.status(200).json({
+					return res.status(statusCode).json({
 						status: "Success",
 						message: "Berhasil memasukkan catatan!",
 						data: { user_id: user_id, catatan_id: catatanId, url: publicUrl },
