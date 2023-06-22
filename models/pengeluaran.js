@@ -8,7 +8,7 @@ const pengeluaranModel = {
       }
       return callback(null, result)
     })
-  }
+  },
 }
 
 module.exports = pengeluaranModel
