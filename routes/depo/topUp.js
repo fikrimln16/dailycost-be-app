@@ -12,7 +12,7 @@ const db = require('../../config/db')
  *       - Depo
  *     description: Endpoint untuk mengedit saldo depo pengguna
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:

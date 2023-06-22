@@ -12,7 +12,7 @@ const db = require('../../config/db')
  *       - Depo
  *     description: Endpoint untuk Menambahkan depo pada user baru
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
