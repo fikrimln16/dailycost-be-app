@@ -32,14 +32,14 @@ const catatanModel = {
 			[title, body, catatan_id, user_id],
 			(error, result) => {
 				if (error) {
-					return callback(error, null);
+					return callback("Terjadi kesalahan pada server!", null, 500);
 				}
 
 				if (result.affectedRows === 0) {
-					return callback({ message: "Catatan tidak ditemukan" }, null);
+					return callback("Catatan tidak ditemukan", null, 404);
 				}
 
-				return callback(null, { catatan_id, title, body });
+				return callback(null, { catatan_id, title, body }, 200);
 			}
 		);
 	},deleteCatatan: (user_id, catatan_id, callback) => {
