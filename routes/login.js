@@ -10,6 +10,8 @@ const db = require("../config/db");
  *   post:
  *     summary: Login user
  *     description: Melakukan login dengan email dan password
+ *     tags:
+ *       - LoginRegister
  *     requestBody:
  *       required: true
  *       content:
@@ -24,7 +26,7 @@ const db = require("../config/db");
  *                 type: string
  *                 example: root
  *     responses:
- *       200:
+ *       '200':
  *         description: Login berhasil
  *         content:
  *           application/json:
@@ -33,10 +35,10 @@ const db = require("../config/db");
  *               properties:
  *                 status:
  *                   type: string
- *                   example: Succes
+ *                   example: Success
  *                 token:
  *                   type: string
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzMsImVtYWlsIjoiYWRtaW4
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzMsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJpYXQiOjE2MzE3NTI0MjQsImV4cCI6MTYzMTc1MjcyNH0.RsRz_4fY1zj6n1kOS6bBkK4bWzWq5PuzcVpWlTKeUx4
  *                 data:
  *                   type: object
  *                   properties:
@@ -46,9 +48,9 @@ const db = require("../config/db");
  *                     nama:
  *                       type: string
  *                       example: admin
- *       401:
+ *       '401':
  *         description: Email atau password salah
- *       500:
+ *       '500':
  *         description: Terjadi kesalahan saat login
  */
 router.post("/", (req, res) => {

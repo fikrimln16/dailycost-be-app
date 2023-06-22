@@ -10,6 +10,8 @@ const db = require("../config/db");
  *   post:
  *     summary: Register user
  *     description: Mendaftarkan pengguna baru dengan nama, email, dan password
+ *     tags:
+ *       - LoginRegister
  *     requestBody:
  *       required: true
  *       content:
@@ -24,7 +26,7 @@ const db = require("../config/db");
  *               password:
  *                 type: string
  *     responses:
- *       200:
+ *       '200':
  *         description: Registrasi berhasil
  *         content:
  *           application/json:
@@ -40,11 +42,12 @@ const db = require("../config/db");
  *                   properties:
  *                     id:
  *                       type: integer
- *       409:
+ *       '409':
  *         description: Email sudah terdaftar
- *       500:
+ *       '500':
  *         description: Terjadi kesalahan saat register
  */
+
 router.post("/", (req, res) => {
 	const { name, email, password } = req.body;
 	const hashedPassword = bcrypt.hashSync(password, 10);
