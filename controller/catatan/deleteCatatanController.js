@@ -61,7 +61,7 @@ const catatanModel = require("../../models/catatan");
  *                   type: string
  *             example:
  *               status: Failed
- *               message: "Terjadi kesalahan pada server"
+ *               message: "Terjadi kesalahan pada server!"
  */
 const deleteCatatan = (req, res) => {
   const { user_id, catatan_id } = req.body;
@@ -70,7 +70,7 @@ const deleteCatatan = (req, res) => {
     if (error) {
       return res.status(statusCode).json({
         status: 'Failed',
-        message: "Terjadi kesalahan pada server",
+        message: "Terjadi kesalahan pada server!",
       });
     } 
 
