@@ -36,7 +36,8 @@ const options = {
 		"./routes/saldo/*.js",
 		"./routes/user/*.js",
 		"./controller/catatan/*.js",
-		"./controller/belanja/*.js"
+		"./controller/belanja/*.js",
+		"./controller/depo/*.js"
 	], // Ganti dengan jalur yang sesuai dengan file rute Anda
 };
 
