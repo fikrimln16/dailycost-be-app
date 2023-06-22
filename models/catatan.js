@@ -51,7 +51,7 @@ const catatanModel = {
         if (error) {
           return callback(error, null, 500);
         } else if (result.length === 0) {
-          return callback(null, 'Catatan tidak ditemukan', 500);
+          return callback(error, "Catatan tidak ditemukan!", 404);
         } else {
           const url = result[0].url;
           db.query(

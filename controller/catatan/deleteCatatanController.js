@@ -70,7 +70,14 @@ const deleteCatatan = (req, res) => {
     if (error) {
       return res.status(statusCode).json({
         status: 'Failed',
-        message: 'Terjadi kesalahan pada server',
+        message: message,
+      });
+    } 
+
+    if(statusCode === 404){
+      return res.status(statusCode).json({
+        status: 'Failed',
+        message: message,
       });
     }
 
