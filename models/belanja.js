@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const belanjaModel = {
-  belanja: (nama, tanggal, jumlah, pembayaran, user_id, callback) => {
+  belanja: (nama, tanggal, jumlah, pembayaran, user_id, kategori, callback) => {
     if (
       pembayaran === 'GOPAY' ||
       pembayaran === 'CASH' ||
@@ -9,8 +9,8 @@ const belanjaModel = {
     ) {
       try {
         db.query(
-          'INSERT INTO pengeluaran VALUES(null, ?, ?, ?, ?, ?) ',
-          [nama, tanggal, jumlah, pembayaran, user_id],
+          'INSERT INTO pengeluaran VALUES(null, ?, ?, ?, ?, ?, ?) ',
+          [nama, tanggal, jumlah, pembayaran, user_id, kategori],
           (error, results) => {
             if (error) {
               return callback(error, null);
@@ -69,7 +69,7 @@ const belanjaModel = {
         return callback(error, null);
       }
     } else {
-      return callback('Metode pembayaran tidak valid', null);
+      return callback('Metode pembayaran tidak valid',"Metode pembayaran tidak valid, mohon masukkan data seperti `GOPAY`, `CASH`, atau `REKENING`.", 400);
     }
   }
 };
