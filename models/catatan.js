@@ -83,9 +83,9 @@ const catatanModel = {
       [id],
       (error, results) => {
         if (error) {
-          return callback(error, null);
+          return callback('Terjadi kesalahan pada server', null, 500);
         }
-        return callback(null, results);
+        return callback(null, results, 200);
       }
     );
   },
