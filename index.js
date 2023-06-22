@@ -31,9 +31,6 @@ const options = {
 	},
 	apis: [
 		"./routes/*.js",
-		"./routes/belanja/*.js",
-		"./routes/belanja/*.js",
-		"./routes/catatan.js",
 		"./routes/depo/*.js",
 		"./routes/pengeluaran/*.js",
 		"./routes/saldo/*.js",
