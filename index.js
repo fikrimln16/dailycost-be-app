@@ -45,15 +45,11 @@ const swaggerSpec = swaggerJsdoc(options);
 
 const login = require("./routes/login");
 const register = require("./routes/register");
-const newDepo = require("./routes/depo/newDepo");
-const topup = require("./routes/depo/topUp");
-const edit_depo = require("./routes/depo/editDepo");
 const userRoutes = require("./routes/user/userRoutes");
 const belanja = require("./routes/belanja");
 const pengeluaran = require("./routes/pengeluaran/pengeluaran");
-const saldo = require("./routes/saldo/saldo");
-
 const catatan = require("./routes/catatan");
+const depo = require("./routes/depo")
 
 // Cors middleware
 app.use(corsMiddleware);
@@ -72,14 +68,11 @@ app.use("/login", login);
 // Endpoint register
 app.use("/register", register);
 
-app.use("/api", newDepo);
 app.use("/api", userRoutes);
 app.use("/api", belanja);
 app.use("/api", pengeluaran);
-app.use("/api", saldo);
 app.use("/api", catatan);
-app.use("/api", topup);
-app.use("/api", edit_depo);
+app.use("/api", depo);
 
 // Jalankan server
 app.listen(5000, () => {

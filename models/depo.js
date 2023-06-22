@@ -42,6 +42,74 @@ const depoModel = {
         }
       );
     });
+  },
+  newDepo: (id, uang_gopay, uang_cash, uang_rekening, callback) => {
+    db.query(
+      'INSERT INTO tabungan VALUES (?, ?, ?, ?)',
+      [id, uang_gopay, uang_cash, uang_rekening],
+      (error, results) => {
+        if (error) {
+          console.error(error);
+          return callback(error, null);
+        }
+  
+        if (results.length === 0) {
+          return callback(new Error('Terjadi kesalahan input!'), null);
+        }
+  
+        const saldoUser = {
+          user_id: id,
+          uang_gopay: uang_gopay,
+          uang_cash: uang_cash,
+          uang_rekening: uang_rekening,
+        };
+  
+        callback(null, saldoUser);
+      }
+    );
+  },
+  editDepo: (id, uang_gopay, uang_cash, uang_rekening, callback) => {
+    db.query(
+      'UPDATE tabungan SET uang_gopay = ?, uang_cash = ?, uang_rekening = ? WHERE id = ?',
+      [uang_gopay, uang_cash, uang_rekening, id],
+      (error, results) => {
+        if (error) {
+          return callback(error, null);
+        }
+  
+        const saldoUser = {
+          uang_gopay,
+          uang_cash,
+          uang_rekening,
+        };
+  
+        callback(null, saldoUser);
+      }
+    );
+  },
+  getSaldo: (id, callback) => {
+    db.query(
+      'SELECT uang_gopay, uang_cash, uang_rekening FROM tabungan WHERE id = ?',
+      [id],
+      (error, results) => {
+        if (error) {
+          console.error(error);
+          return callback(error, null, 500);
+        }
+  
+        if (results.length === 0) {
+          return callback(error, null, 404);
+        }
+  
+        const saldo = {
+          uang_gopay: results[0].uang_gopay,
+          uang_cash: results[0].uang_cash,
+          uang_rekening: results[0].uang_rekening,
+        };
+  
+        callback(null, saldo, 200);
+      }
+    );
   }
 }
 

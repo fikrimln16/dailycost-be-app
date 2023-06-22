@@ -1,7 +1,4 @@
-const express = require('express');
-const router = express.Router();
-const verifyToken = require('../../auth/verifyToken');
-const db = require('../../config/db')
+const depoModel = require('../../models/depo');
 
 
 /**
@@ -98,47 +95,35 @@ const db = require('../../config/db')
  *               status: "Failed"
  *               message: "Terjadi kesalahan pada server."
  */
-router.put('/depo', verifyToken, (req, res) => {
-    try {
-        const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
-        
-        db.query('SELECT * FROM tabungan WHERE id = ?', [id], (error, results) => {
-            if (error) {
-                console.error(error);
-                return res.status(500).json({
-                    status: "Failed",
-                    message: `Terjadi kesalahan pada server!`,
-                });
-            }
-            if (results.length === 0) {
-                return res.status(401).json({
-                    status: "Failed",
-                    message: `Mohon masukkan data user_id yang benar!`,
-                });
-            }
-            db.query('UPDATE tabungan SET uang_gopay = ?, uang_cash = ?, uang_rekening = ? WHERE id = ?', [uang_gopay, uang_cash, uang_rekening, id], (error, updateResult) => {
-                if (error) {
-                    console.error(error);
-                    return res.status(500).json({ message: 'Terjadi kesalahan.' });
-                }
-                const saldoUser = {
-                    uang_gopay,
-                    uang_cash,
-                    uang_rekening,
-                };
-                return res.status(200).json({
-                    status: "Success",
-                    message: `Berhasil mengubah saldo dengan user id: ${id}`,
-                    data: saldoUser
-                });
-            });
+const depo = (req, res) => {
+  try {
+    const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
+    depoModel.editDepo(
+      id,
+      uang_gopay,
+      uang_cash,
+      uang_rekening,
+      (error, saldoUser) => {
+        if (error) {
+          return res.status(500).json({
+            status: 'Failed',
+            message: 'Terjadi kesalahan pada server!',
+          });
+        }
+
+        return res.status(200).json({
+          status: 'Success',
+          message: `Berhasil mengubah saldo dengan user id: ${id}`,
+          data: saldoUser,
         });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Terjadi kesalahan pada server.' });
-    }
-});
+      }
+    );
+  } catch (error) {
+    return res.status(500).json({
+      status: 'Failed',
+      message: 'Terjadi kesalahan pada server!',
+    });
+  }
+};
 
-
-
-module.exports = router;
+module.exports = depo;

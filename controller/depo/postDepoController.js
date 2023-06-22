@@ -1,7 +1,5 @@
-const express = require('express');
-const router = express.Router();
-const verifyToken = require('../../auth/verifyToken');
-const db = require('../../config/db')
+const depoModel = require('../../models/depo');
+
 
 /**
  * @swagger
@@ -97,38 +95,24 @@ const db = require('../../config/db')
  *               status: "Failed"
  *               message: "Terjadi kesalahan pada server."
  */
-router.post('/depo', verifyToken, (req, res) => {
-    const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
+const depo = (req, res) => {
+  const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
 
-    db.query('INSERT INTO tabungan VALUES (?,?,?,?)', [id, uang_gopay, uang_cash, uang_rekening], (error, results) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).json({
-                status: "Failed",
-                message: `Terjadi kesalahan pada server!`,
-            });
-        }
+  depoModel.newDepo(id, uang_gopay, uang_cash, uang_rekening, (error, saldoUser) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: 'Failed',
+        message: 'Terjadi kesalahan pada server!',
+      });
+    }
 
-        if (results.length === 0) {
-            return res.status(400).json({
-                status: "Failed",
-                message: `Terjadi kesalahan input!`,
-            });
-        }
+    return res.status(200).json({
+      status: 'Success',
+      message: `Berhasil menambahkan saldo baru dengan user id: ${id}`,
+      data: saldoUser,
+    });
+  });
+};
 
-        const saldoUser = {
-            "user_id" : id,
-            "uang_gopay" : uang_gopay,
-            "uang_cash" : uang_cash,
-            "uang_rekening" : uang_rekening
-        }
-
-        return res.status(200).json({
-            status: "Success",
-            message: `Berhasil menambahkan saldo baru dengan user id: ${id}`,
-            data: saldoUser
-        });
-    })
-})
-
-module.exports = router;
+module.exports = depo;

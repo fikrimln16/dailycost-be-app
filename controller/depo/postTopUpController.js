@@ -1,4 +1,4 @@
-const topupSaldoModel = require('../../models/depo');
+const depoModel = require('../../models/depo');
 
 /**
  * @swagger
@@ -97,7 +97,7 @@ const topupSaldoModel = require('../../models/depo');
 const topup = (req, res) => {
   const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
 
-  topupSaldoModel.topUp(id, uang_gopay, uang_cash, uang_rekening, (error, saldoUser, statusCode) => {
+  depoModel.topUp(id, uang_gopay, uang_cash, uang_rekening, (error, saldoUser, statusCode) => {
     
     if(statusCode===401){
       return res.status(statusCode).json({
