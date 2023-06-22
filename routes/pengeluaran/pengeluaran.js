@@ -3,7 +3,7 @@ const router = express.Router();
 const verifyToken = require("../../auth/verifyToken");
 const db = require("../../config/db");
 
-const deletePengeluaran = require("../../controller/pengeluaran/deletePengeluaran")
+const deletePengeluaranController = require("../../controller/pengeluaran/deletePengeluaranController")
 
 /**
  * @swagger
@@ -512,6 +512,6 @@ router.get("/pengeluaran/:id/list/:tanggal", verifyToken, (req, res) => {
  *               status: Failed
  *               message: "Terjadi kesalahan."
  */
-router.delete("/pengeluaran", deletePengeluaran)
+router.delete("/pengeluaran", deletePengeluaranController)
 
 module.exports = router;
