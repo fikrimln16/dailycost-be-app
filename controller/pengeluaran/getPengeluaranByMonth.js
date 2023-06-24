@@ -29,7 +29,7 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *         required: true
  *         schema:
  *           type: string
-  *       - in: query
+ *       - in: query
  *         name: kategori
  *         description: Filter pengeluaran berdasarkan kategori
  *         schema:
@@ -42,40 +42,76 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Succes
+ *                 message:
+ *                   type: string
+ *                   example: Berhasil mengambil pengeluaran dengan user id 1 pada bulan 04 tahun 2023 dan kategori makanan
  *                 results:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
+ *                       pengeluaran_id:
+ *                         type: integer
+ *                         example: 1
  *                       nama:
  *                         type: string
+ *                         example: Makanan Ketoprak
  *                       tanggal:
  *                         type: string
+ *                         example: 2023-04-05
  *                       jumlah:
  *                         type: number
+ *                         example: 30000
  *                       pembayaran:
  *                         type: string
+ *                         example: GOPAY
+ *                       kategori:
+ *                         type: string
+ *                         example: makanan
  *                 pengeluaran:
  *                   type: object
  *                   properties:
  *                     pengeluaran_gopay:
  *                       type: number
+ *                       example: 30000
  *                     pengeluaran_rekening:
  *                       type: number
+ *                       example: 0
  *                     pengeluaran_cash:
  *                       type: number
+ *                       example: 0
  *                     pembelian_gopay:
  *                       type: number
+ *                       example: 1
  *                     pembelian_rekening:
  *                       type: number
+ *                       example: 0
  *                     pembelian_cash:
  *                       type: number
+ *                       example: 0
  *                     total:
  *                       type: number
+ *                       example: 1
  *                     total_pembelian:
  *                       type: number
+ *                       example: 30000
  *       500:
- *         description: Terjadi kesalahan saat mengambil daftar pengeluaran
+ *         description: Terjadi kesalahan pada server saat melakukan pembelanjaan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: Terjadi kesalahan pada server saat mengambil data pengeluaran.
  */
 const getPengeluaranByMonth = (req, res) => {
   const id = req.params.id;
@@ -94,13 +130,13 @@ const getPengeluaranByMonth = (req, res) => {
           console.error(error);
           return res.status(500).json({
             status: 'Failed',
-            message: 'Terjadi kesalahan pada server!',
+            message: 'Terjadi kesalahan pada server saat mengambil data pengeluaran.',
           });
         }
   
         return res.status(200).json({
           status: 'Success',
-          message: `Berhasil mengambil data pada bulan: ${bulan}, tahun: ${tahun}`,
+          message: `Berhasil mengambil pengeluaran dengan user id ${id} pada bulan ${bulan} tahun ${tahun} dan kategori ${kategori}`,
           data,
         });
       }
@@ -115,13 +151,13 @@ const getPengeluaranByMonth = (req, res) => {
           console.error(error);
           return res.status(500).json({
             status: 'Failed',
-            message: 'Terjadi kesalahan pada server!',
+            message: 'Terjadi kesalahan pada server saat mengambil data pengeluaran.',
           });
         }
   
         return res.status(200).json({
           status: 'Success',
-          message: `Berhasil mengambil data pada bulan: ${bulan}, tahun: ${tahun}`,
+          message: `Berhasil mengambil pengeluaran dengan user id ${id} pada bulan ${bulan} tahun ${tahun}`,
           data,
         });
       }

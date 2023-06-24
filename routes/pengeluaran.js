@@ -11,7 +11,7 @@ const getPengeluaranChart = require("../controller/pengeluaran/getPengeluaranCha
 router.delete("/pengeluaran", verifyToken, deletePengeluaranController)
 router.get("/pengeluaran/:id", getPengeluaranById)
 router.get("/pengeluaran/:id/list/:tanggal", getPengeluaranByDate)
-router.get("/pengeluaran/:id/list/:bulan/:tahun",   verifyToken, getPengeluaranByMonth)
+router.get("/pengeluaran/:id/list/:bulan/:tahun", getPengeluaranByMonth)
 router.get("/pengeluaran/chart/:id",  verifyToken, getPengeluaranChart)
 
 module.exports = router
