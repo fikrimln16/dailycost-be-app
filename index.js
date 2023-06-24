@@ -35,7 +35,8 @@ const options = {
 		"./controller/catatan/*.js",
 		"./controller/belanja/*.js",
 		"./controller/depo/*.js",
-		"./controller/pengeluaran/*.js"
+		"./controller/pengeluaran/*.js",
+		"./controller/pemasukan/*.js"
 	], // Ganti dengan jalur yang sesuai dengan file rute Anda
 };
 
@@ -48,6 +49,7 @@ const belanja = require("./routes/belanja");
 const pengeluaran = require("./routes/pengeluaran");
 const catatan = require("./routes/catatan");
 const depo = require("./routes/depo")
+const pemasukan = require("./routes/pemasukan")
 
 // Cors middleware
 app.use(corsMiddleware);
@@ -71,6 +73,7 @@ app.use("/api", belanja);
 app.use("/api", pengeluaran);
 app.use("/api", catatan);
 app.use("/api", depo);
+app.use("/api", pemasukan);
 
 // Jalankan server
 app.listen(5000, () => {
