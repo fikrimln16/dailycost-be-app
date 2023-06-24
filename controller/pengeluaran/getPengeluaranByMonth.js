@@ -29,6 +29,11 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *         required: true
  *         schema:
  *           type: string
+  *       - in: query
+ *         name: kategori
+ *         description: Filter pengeluaran berdasarkan kategori
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Berhasil mengambil daftar pengeluaran
@@ -76,27 +81,52 @@ const getPengeluaranByMonth = (req, res) => {
   const id = req.params.id;
   const bulan = req.params.bulan;
   const tahun = req.params.tahun;
+  const kategori = req.query.kategori;
 
-  pengeluaranModel.getPengeluaranByMonth(
-    id,
-    bulan,
-    tahun,
-    (error, data) => {
-      if (error) {
-        console.error(error);
-        return res.status(500).json({
-          status: 'Failed',
-          message: 'Terjadi kesalahan pada server!',
+  if(kategori){
+    pengeluaranModel.getPengeluaranByMonthCategory(
+      id,
+      bulan,
+      tahun,
+      kategori.toLowerCase(),
+      (error, data) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).json({
+            status: 'Failed',
+            message: 'Terjadi kesalahan pada server!',
+          });
+        }
+  
+        return res.status(200).json({
+          status: 'Success',
+          message: `Berhasil mengambil data pada bulan: ${bulan}, tahun: ${tahun}`,
+          data,
         });
       }
-
-      return res.status(200).json({
-        status: 'Success',
-        message: `Berhasil mengambil data pada bulan: ${bulan}, tahun: ${tahun}`,
-        data,
-      });
-    }
-  );
+    );
+  } else {
+    pengeluaranModel.getPengeluaranByMonth(
+      id,
+      bulan,
+      tahun,
+      (error, data) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).json({
+            status: 'Failed',
+            message: 'Terjadi kesalahan pada server!',
+          });
+        }
+  
+        return res.status(200).json({
+          status: 'Success',
+          message: `Berhasil mengambil data pada bulan: ${bulan}, tahun: ${tahun}`,
+          data,
+        });
+      }
+    );
+  }
 }
 
 module.exports = getPengeluaranByMonth

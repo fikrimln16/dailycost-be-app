@@ -102,7 +102,7 @@ const belanjaModel = require("../../models/belanja");
 const belanja = (req, res) => {
   const { nama, tanggal, jumlah, pembayaran, user_id, kategori } = req.body;
   
-  belanjaModel.belanja(nama, tanggal, jumlah, pembayaran, user_id, kategori, (error, message, statusCode) => {
+  belanjaModel.belanja(nama, tanggal, jumlah, pembayaran, user_id, kategori.toLowerCase(), (error, message, statusCode) => {
     if(statusCode==400){
       return res.status(statusCode).json({
         status: 'Failed',

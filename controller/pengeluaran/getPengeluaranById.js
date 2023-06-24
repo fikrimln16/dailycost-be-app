@@ -17,6 +17,11 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *         required: true
  *         schema:
  *           type: integer
+ *       - in: query
+ *         name: kategori
+ *         description: Filter pengeluaran berdasarkan kategori
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Berhasil mengambil daftar pengeluaran
@@ -55,19 +60,38 @@ const pengeluaranModel = require("../../models/pengeluaran");
 
 const getPengeluaranById = (req, res) => {
   const id = req.params.id;
+  const kategori = req.query.kategori;
 
-  pengeluaranModel.getPengeluaranById(id, (error, result) =>{
-    if (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Terjadi kesalahan.' });
-    }
+  if (kategori) {
+    // Jika query kategori ada
+    pengeluaranModel.getPengeluaranByCategory(id, kategori.toLowerCase(), (error, result) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Terjadi kesalahan.' });
+      }
 
-    return res.status(200).json({
-      status: 'Success',
-      message: `Berhasil mengambil pengeluaran dengan user id: ${id}`,
-      data: result,
+      return res.status(200).json({
+        status: 'Success',
+        message: `Berhasil mengambil pengeluaran dengan user id: ${id} dan kategori: ${kategori}`,
+        data: result,
+      });
     });
-  })
-}
+  } else {
+    // Jika query kategori tidak ada
+    pengeluaranModel.getPengeluaranById(id, (error, result) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Terjadi kesalahan.' });
+      }
+
+      return res.status(200).json({
+        status: 'Success',
+        message: `Berhasil mengambil pengeluaran dengan user id: ${id}`,
+        data: result,
+      });
+    });
+  }
+};
+
 
 module.exports = getPengeluaranById

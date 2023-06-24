@@ -102,7 +102,7 @@ const pemasukanModel = require("../../models/pemasukan");
 const pemasukan = (req, res) => {
   const { nama, tanggal, jumlah, pembayaran, user_id, kategori } = req.body;
   
-  pemasukanModel.postPemasukan(nama, tanggal, jumlah, pembayaran, user_id, kategori, (error, result, statusCode) => {
+  pemasukanModel.postPemasukan(nama, tanggal, jumlah, pembayaran, user_id, kategori.toLowerCase(), (error, result, statusCode) => {
     if(statusCode==400){
       return res.status(400).json({
         status: 'Failed',

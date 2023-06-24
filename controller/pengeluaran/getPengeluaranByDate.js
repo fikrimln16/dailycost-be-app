@@ -22,6 +22,11 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *         required: true
  *         schema:
  *           type: string
+  *       - in: query
+ *         name: kategori
+ *         description: Filter pengeluaran berdasarkan kategori
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Berhasil mengambil daftar pengeluaran
@@ -70,22 +75,42 @@ const pengeluaranModel = require("../../models/pengeluaran");
 const getPengeluaranByDate = (req, res) => {
   const id = req.params.id;
   const tanggal = req.params.tanggal;
+  const kategori = req.query.kategori;
 
-  pengeluaranModel.getPengeluaranByDate(id, tanggal, (error, data) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).json({
-        status: 'Failed',
-        message: 'Terjadi kesalahan pada server!',
+  if(kategori){
+    pengeluaranModel.getPengeluaranByDateCategory(id, tanggal, kategori.toLowerCase(), (error, data) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({
+          status: 'Failed',
+          message: 'Terjadi kesalahan pada server!',
+        });
+      }
+  
+      return res.status(200).json({
+        status: 'Success',
+        message: `Berhasil mengambil data pada tanggal: ${tanggal}`,
+        data,
       });
-    }
-
-    return res.status(200).json({
-      status: 'Success',
-      message: `Berhasil mengambil data pada tanggal: ${tanggal}`,
-      data,
     });
-  });
+  }else{
+    pengeluaranModel.getPengeluaranByDate(id, tanggal, (error, data) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({
+          status: 'Failed',
+          message: 'Terjadi kesalahan pada server!',
+        });
+      }
+  
+      return res.status(200).json({
+        status: 'Success',
+        message: `Berhasil mengambil data pada tanggal: ${tanggal}`,
+        data,
+      });
+    });
+
+  }
 }
 
 module.exports = getPengeluaranByDate
