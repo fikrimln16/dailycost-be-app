@@ -24,6 +24,12 @@ const pemasukanModel = require("../../models/pemasukan")
  *             schema:
  *               type: object
  *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: Succes
+ *                 message:
+ *                   type: string
+ *                   example: Berhasil input pemasukan dengan user id 1
  *                 results:
  *                   type: array
  *                   items:
@@ -31,23 +37,22 @@ const pemasukanModel = require("../../models/pemasukan")
  *                     properties:
  *                       pemasukan_id:
  *                         type: integer
+ *                         example: 1
  *                       nama:
  *                         type: string
+ *                         example: Gajian dari bos bulan ini
  *                       tanggal:
  *                         type: string
+ *                         example: 2023-04-05
  *                       jumlah:
  *                         type: number
+ *                         example: 200000
  *                       pembayaran:
  *                         type: string
- *                 pemasukan:
- *                   type: object
- *                   properties:
- *                     pemasukan_gopay:
- *                       type: number
- *                     pemasukan_rekening:
- *                       type: number
- *                     pemasukan_cash:
- *                       type: number
+ *                         example: REKENING
+ *                       kategori:
+ *                         type: string
+ *                         example: Salary
  *       500:
  *         description: Terjadi kesalahan saat mengambil daftar pemasukan
  */
