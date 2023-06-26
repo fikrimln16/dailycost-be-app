@@ -64,7 +64,7 @@ const pengeluaranModel = {
 	},
 	getPengeluaranById: (id, callback) => {
 		db.query(
-			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE user_id = ? ORDER BY pengeluaran_id DESC',
+			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, user_id,  kategori FROM pengeluaran WHERE user_id = ? ORDER BY pengeluaran_id DESC',
 			[id],
 			(error, results) => {
 				if (error) {
@@ -105,7 +105,7 @@ const pengeluaranModel = {
 	},
 	getPengeluaranByDate: (id, tanggal, callback) => {
 		db.query(
-			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE user_id = ? && tanggal BETWEEN ? AND ? ORDER BY pengeluaran_id DESC',
+			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, user_id,  kategori FROM pengeluaran WHERE user_id = ? && tanggal BETWEEN ? AND ? ORDER BY pengeluaran_id DESC',
 			[id, `${tanggal} 00:00:00`, `${tanggal} 23:59:59`],
 			(error, results) => {
 				if (error) {
@@ -161,7 +161,7 @@ const pengeluaranModel = {
 	},
 	getPengeluaranByMonth: (id, bulan, tahun, callback) => {
 		db.query(
-			`SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m') = ? && user_id = ? ORDER BY pengeluaran_id DESC`,
+			`SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, user_id,  kategori FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m') = ? && user_id = ? ORDER BY pengeluaran_id DESC`,
 			[`${tahun}-${bulan}`, id],
 			(error, results) => {
 				if (error) {
@@ -238,7 +238,7 @@ const pengeluaranModel = {
 	},
 	getPengeluaranByCategory: (user_id, kategori, callback) => {
 		db.query(
-			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE user_id = ? AND kategori = ? ORDER BY pengeluaran_id DESC',
+			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, user_id,  kategori FROM pengeluaran WHERE user_id = ? AND kategori = ? ORDER BY pengeluaran_id DESC',
 			[user_id, kategori],
 			(error, results) => {
 				if (error) {
@@ -278,7 +278,7 @@ const pengeluaranModel = {
 	},
 	getPengeluaranByDateCategory: (id, tanggal, kategori, callback) => {
 		db.query(
-			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE user_id = ? && tanggal BETWEEN ? AND ? && kategori = ? ORDER BY pengeluaran_id DESC',
+			'SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, user_id,  kategori FROM pengeluaran WHERE user_id = ? && tanggal BETWEEN ? AND ? && kategori = ? ORDER BY pengeluaran_id DESC',
 			[id, `${tanggal} 00:00:00`, `${tanggal} 23:59:59`, kategori],
 			(error, results) => {
 				if (error) {
@@ -333,7 +333,7 @@ const pengeluaranModel = {
 	},
 	getPengeluaranByMonthCategory: (id, bulan, tahun, kategori, callback) => {
 		db.query(
-			`SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, kategori FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m') = ? && user_id = ? && kategori = ? ORDER BY pengeluaran_id DESC`,
+			`SELECT pengeluaran_id, nama, DATE_FORMAT(tanggal, "%d %M %Y %H:%i:%s") AS tanggal, jumlah, pembayaran, user_id, kategori FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m') = ? && user_id = ? && kategori = ? ORDER BY pengeluaran_id DESC`,
 			[`${tahun}-${bulan}`, id, kategori],
 			(error, results) => {
 				if (error) {

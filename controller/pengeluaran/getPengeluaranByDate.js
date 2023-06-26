@@ -61,6 +61,9 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *                       pembayaran:
  *                         type: string
  *                         example: GOPAY
+ *                       user_id:
+ *                         type: integer
+ *                         example: 1
  *                       kategori:
  *                         type: string
  *                         example: makanan
