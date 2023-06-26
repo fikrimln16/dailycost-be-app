@@ -29,6 +29,8 @@ const depoModel = require('../../models/depo');
  *                 data:
  *                   type: object
  *                   properties:
+ *                     user_id:
+ *                       type: integer
  *                     uang_gopay:
  *                       type: number
  *                     uang_cash:
