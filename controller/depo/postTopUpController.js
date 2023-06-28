@@ -4,10 +4,10 @@ const depoModel = require('../../models/depo');
  * @swagger
  * /api/topup:
  *   post:
- *     summary: Mengedit saldo depo pengguna
+ *     summary: Menambahkan saldo depo pengguna
  *     tags:
  *       - Depo
- *     description: Endpoint untuk mengedit saldo depo pengguna
+ *     description: Endpoint untuk menambahkan saldo depo pengguna
  *     security:
  *       - bearerAuth: []
  *     requestBody:

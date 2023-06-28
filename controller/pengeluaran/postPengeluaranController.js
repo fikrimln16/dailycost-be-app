@@ -1,13 +1,13 @@
-const belanjaModel = require("../../models/belanja");
+const pengeluaranModel = require("../../models/pengeluaran");
 
 /**
  * @swagger
- * /api/belanja:
+ * /api/pengeluaran:
  *   post:
- *     summary: Melakukan pembelian barang
+ *     summary: Melakukan input pengeluaran barang
  *     tags :
- *       - Belanja
- *     description: Menginputkan informasi pembelian barang ke dalam database
+ *       - Pengeluaran
+ *     description: Menginputkan informasi pengeluaran barang ke dalam database
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -99,10 +99,10 @@ const belanjaModel = require("../../models/belanja");
  *               status: Failed
  *               message: Terjadi kesalahan pada server saat melakukan pembelanjaan.
  */
-const belanja = (req, res) => {
+const postPengeluaran = (req, res) => {
   const { nama, tanggal, jumlah, pembayaran, user_id, kategori } = req.body;
   
-  belanjaModel.belanja(nama, tanggal, jumlah, pembayaran, user_id, kategori.toLowerCase(), (error, message, statusCode) => {
+  pengeluaranModel.postPengeluaran(nama, tanggal, jumlah, pembayaran, user_id, kategori.toLowerCase(), (error, message, statusCode) => {
     if(statusCode==400){
       return res.status(statusCode).json({
         status: 'Failed',
@@ -126,4 +126,4 @@ const belanja = (req, res) => {
   });
 };
 
-module.exports = belanja;
+module.exports = postPengeluaran;

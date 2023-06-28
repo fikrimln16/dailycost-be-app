@@ -33,7 +33,6 @@ const options = {
 		"./routes/*.js",
 		"./routes/user/*.js",
 		"./controller/catatan/*.js",
-		"./controller/belanja/*.js",
 		"./controller/depo/*.js",
 		"./controller/pengeluaran/*.js",
 		"./controller/pemasukan/*.js"
@@ -45,7 +44,6 @@ const swaggerSpec = swaggerJsdoc(options);
 const login = require("./routes/login");
 const register = require("./routes/register");
 const userRoutes = require("./routes/user/userRoutes");
-const belanja = require("./routes/belanja");
 const pengeluaran = require("./routes/pengeluaran");
 const catatan = require("./routes/catatan");
 const depo = require("./routes/depo")
@@ -69,7 +67,6 @@ app.use("/login", login);
 app.use("/register", register);
 
 app.use("/api", userRoutes);
-app.use("/api", belanja);
 app.use("/api", pengeluaran);
 app.use("/api", catatan);
 app.use("/api", depo);
