@@ -70,12 +70,21 @@ router.post("/", (req, res) => {
 					const id = {
 						id: results[0].id,
 					};
-					return res.status(200).json({
-						status: "Succes",
-						message: `Berhasil register dengan email : ${email}`,
-						token,
-						data: id,
-					});
+					db.query("INSERT INTO tabungan VALUES(?, 0, 0, 0)", [id.id], (error, result) => {
+						if(error){
+							console.log(error)
+							return res.status(500).json({
+								status: "Failed",
+								message: `Tidak dapat membuat akun, terjadi kesalahan pada server!`
+							});
+						}
+						return res.status(200).json({
+							status: "Succes",
+							message: `Berhasil register dengan email : ${email}`,
+							token,
+							data: id,
+						});
+					})
 				}
 			});
 		}
