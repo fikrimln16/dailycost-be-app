@@ -84,7 +84,7 @@ router.post("/", (req, res) => {
 
 			// Buat token JWT
 			const token = jwt.sign(
-				{ id: results[0].id, email: results[0].email },
+				{ id: results[0].id },
 				"rahasia",
 				{ expiresIn: "24h" }
 			);

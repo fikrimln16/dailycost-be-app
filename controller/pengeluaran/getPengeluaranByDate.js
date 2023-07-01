@@ -97,7 +97,19 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *                     date:
  *                       type: string
  *                       example: 2023-04-05
-*       500:
+ *       401:
+ *         description: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
+ *       500:
  *         description: Terjadi kesalahan pada server saat melakukan pembelanjaan
  *         content:
  *           application/json:

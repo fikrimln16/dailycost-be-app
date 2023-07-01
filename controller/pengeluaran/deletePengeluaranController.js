@@ -2,12 +2,19 @@ const pengeluaranModel = require("../../models/pengeluaran");
 
 /**
  * @swagger
- * /api/pengeluaran:
+ * /api/pengeluaran/{id}:
  *   delete:
  *     summary: Menghapus pengeluaran by pengeluaran_id
  *     description: Endpoint untuk Menghapus pengeluaran by pengeluaran_id
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID pengguna
+ *         required: true
+ *         schema:
+ *           type: integer
  *     tags:
  *       - Pengeluaran
  *     requestBody:
@@ -38,6 +45,18 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *             example:
  *               status: "Success"
  *               message: "Berhasil menghapus catatan!"
+ *       401:
+ *         description: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
  *       404:
  *         description: Catatan Tidak Ditemukan!
  *         content:
@@ -65,7 +84,14 @@ const pengeluaranModel = require("../../models/pengeluaran");
  */
 const deletePengeluaran = (req, res) => {
 	const { user_id, pengeluaran_id } = req.body;
+	const id = req.params.id
 
+	if(id.toString() !== req.body.user_id.toString()){
+    return res.status(401).json({
+      message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
+    })
+  }
+	
 	pengeluaranModel.dataPengeluaran(user_id, pengeluaran_id, (error, result, statusCode) => {
 		if (error) {
 			return res.status(statusCode).json({

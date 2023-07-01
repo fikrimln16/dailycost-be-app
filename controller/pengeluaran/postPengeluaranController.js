@@ -2,7 +2,7 @@ const pengeluaranModel = require("../../models/pengeluaran");
 
 /**
  * @swagger
- * /api/pengeluaran:
+ * /api/pengeluaran/{id}:
  *   post:
  *     summary: Melakukan input pengeluaran barang
  *     tags :
@@ -10,6 +10,13 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *     description: Menginputkan informasi pengeluaran barang ke dalam database
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID pengguna
+ *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -84,6 +91,18 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *                 value:
  *                   status: Failed
  *                   message: Metode pembayaran tidak valid, mohon masukkan data seperti `GOPAY`, `CASH`, atau `REKENING`.
+ *       401:
+ *         description: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               status: Failed
+ *               message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
  *       500:
  *         description: Terjadi kesalahan pada server saat melakukan pembelanjaan
  *         content:
@@ -101,7 +120,14 @@ const pengeluaranModel = require("../../models/pengeluaran");
  */
 const postPengeluaran = (req, res) => {
   const { nama, tanggal, jumlah, pembayaran, user_id, kategori } = req.body;
-  
+  const id = req.params.id
+
+  if(id.toString() !== req.body.user_id.toString()){
+    return res.status(401).json({
+      message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
+    })
+  }
+
   pengeluaranModel.postPengeluaran(nama, tanggal, jumlah, pembayaran, user_id, kategori.toLowerCase(), (error, message, statusCode) => {
     if(statusCode==400){
       return res.status(statusCode).json({
