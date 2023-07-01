@@ -41,7 +41,7 @@ const verifyToken = (req, res, next) => {
 		if (userId !== req.params.id) {
 			return res.status(401).json({ 
 				status: "Failed",
-				message: "Akses ditolak" 
+				message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!" 
 			});
 		}
 
