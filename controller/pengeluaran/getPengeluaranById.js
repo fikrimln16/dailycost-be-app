@@ -31,48 +31,51 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *               properties:
  *                 status:
  *                   type: string
- *                   example: Succes
+ *                   example: Success
  *                 message:
  *                   type: string
- *                   example: Berhasil mengambil pengeluaran dengan user id 1 dan kategori makanan
- *                 results:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       pengeluaran_id:
- *                         type: integer
- *                         example: 1
- *                       nama:
- *                         type: string
- *                         example: Makanan Kucing
- *                       tanggal:
- *                         type: string
- *                         example: 22 June 2023 14:43:59
- *                       jumlah:
- *                         type: number
- *                         example: 20000
- *                       pembayaran:
- *                         type: string
- *                         example: GOPAY
- *                       user_id:
- *                         type: integer
- *                         example: 1
- *                       kategori:
- *                         type: string
- *                         example: makanan
- *                 pengeluaran:
+ *                   example: Berhasil mengambil pengeluaran dengan user id 73 dan kategori hiburan
+ *                 data:
  *                   type: object
  *                   properties:
- *                     pengeluaran_gopay:
- *                       type: number
- *                       example: 20000
- *                     pengeluaran_rekening:
- *                       type: number
- *                       example: 0
- *                     pengeluaran_cash:
- *                       type: number
- *                       example: 0
+ *                     results:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           pengeluaran_id:
+ *                             type: integer
+ *                             example: 139
+ *                           nama:
+ *                             type: string
+ *                             example: Dufan
+ *                           tanggal:
+ *                             type: string
+ *                             example: 24 April 2023 00:00:00
+ *                           jumlah:
+ *                             type: number
+ *                             example: 20000
+ *                           pembayaran:
+ *                             type: string
+ *                             example: REKENING
+ *                           user_id:
+ *                             type: integer
+ *                             example: 73
+ *                           kategori:
+ *                             type: string
+ *                             example: hiburan
+ *                     pengeluaran:
+ *                       type: object
+ *                       properties:
+ *                         pengeluaran_gopay:
+ *                           type: number
+ *                           example: 60000
+ *                         pengeluaran_rekening:
+ *                           type: number
+ *                           example: 20000
+ *                         pengeluaran_cash:
+ *                           type: number
+ *                           example: 0
  *       401:
  *         description: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
  *         content:
@@ -100,6 +103,7 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *               status: Failed
  *               message: Terjadi kesalahan pada server saat mengambil data pengeluaran.
  */
+
 const getPengeluaranById = (req, res) => {
 	const id = req.params.id;
 	const kategori = req.query.kategori;

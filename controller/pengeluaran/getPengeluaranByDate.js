@@ -41,62 +41,65 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *                 message:
  *                   type: string
  *                   example: Berhasil mengambil pengeluaran dengan user id 1 pada tanggal 2023-04-05 dan kategori makanan
- *                 results:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       pengeluaran_id:
- *                         type: integer
- *                         example: 1
- *                       nama:
- *                         type: string
- *                         example: Makanan Ketoprak
- *                       tanggal:
- *                         type: string
- *                         example: 2023-04-05
- *                       jumlah:
- *                         type: number
- *                         example: 30000
- *                       pembayaran:
- *                         type: string
- *                         example: GOPAY
- *                       user_id:
- *                         type: integer
- *                         example: 1
- *                       kategori:
- *                         type: string
- *                         example: makanan
- *                 pengeluaran:
+ *                 data:
  *                   type: object
  *                   properties:
- *                     pengeluaran_gopay:
- *                       type: number
- *                       example: 30000
- *                     pengeluaran_rekening:
- *                       type: number
- *                       example: 0
- *                     pengeluaran_cash:
- *                       type: number
- *                       example: 0
- *                     pembelian_gopay:
- *                       type: number
- *                       example: 1
- *                     pembelian_rekening:
- *                       type: number
- *                       example: 0
- *                     pembelian_cash:
- *                       type: number
- *                       example: 0
- *                     total:
- *                       type: number
- *                       example: 1
- *                     total_pembelian:
- *                       type: number
- *                       example: 30000
- *                     date:
- *                       type: string
- *                       example: 2023-04-05
+ *                     results:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           pengeluaran_id:
+ *                             type: integer
+ *                             example: 1
+ *                           nama:
+ *                             type: string
+ *                             example: Makanan Ketoprak
+ *                           tanggal:
+ *                             type: string
+ *                             example: 2023-04-05
+ *                           jumlah:
+ *                             type: number
+ *                             example: 30000
+ *                           pembayaran:
+ *                             type: string
+ *                             example: GOPAY
+ *                           user_id:
+ *                             type: integer
+ *                             example: 1
+ *                           kategori:
+ *                             type: string
+ *                             example: makanan
+ *                     pengeluaran:
+ *                       type: object
+ *                       properties:
+ *                         pengeluaran_gopay:
+ *                           type: number
+ *                           example: 30000
+ *                         pengeluaran_rekening:
+ *                           type: number
+ *                           example: 0
+ *                         pengeluaran_cash:
+ *                           type: number
+ *                           example: 0
+ *                         pembelian_gopay:
+ *                           type: number
+ *                           example: 1
+ *                         pembelian_rekening:
+ *                           type: number
+ *                           example: 0
+ *                         pembelian_cash:
+ *                           type: number
+ *                           example: 0
+ *                         total:
+ *                           type: number
+ *                           example: 1
+ *                         total_pembelian:
+ *                           type: number
+ *                           example: 30000
+ *                         date:
+ *                           type: string
+ *                           example: 2023-04-05
  *       401:
  *         description: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
  *         content:

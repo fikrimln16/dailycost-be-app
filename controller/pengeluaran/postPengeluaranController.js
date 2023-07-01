@@ -45,7 +45,7 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *                 example: Makanan
  *     responses:
  *       200:
- *         description: Berhasil melakukan pembelian
+ *         description: Berhasil melakukan input pengeluaran
  *         content:
  *           application/json:
  *             schema:
@@ -53,24 +53,31 @@ const pengeluaranModel = require("../../models/pengeluaran");
  *               properties:
  *                 status:
  *                   type: string
+ *                   example: Success
  *                 message:
  *                   type: string
+ *                   example: Berhasil melakukan input pengeluaran
  *                 data:
  *                   type: object
  *                   properties:
  *                     nama:
  *                       type: string
+ *                       example: Makanan
  *                     tanggal:
  *                       type: string
- *                       format: date
+ *                       example: 2023-04-05
  *                     jumlah:
  *                       type: number
+ *                       example: 20000
  *                     pembayaran:
  *                       type: string
+ *                       example: GOPAY
  *                     user_id:
- *                       type: number
+ *                       type: integer
+ *                       example: 73
  *                     kategori:
  *                       type: string
+ *                       example: Makanan
  *       400:
  *         description: Terjadi kesalahan input
  *         content:
