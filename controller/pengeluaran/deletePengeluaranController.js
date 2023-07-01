@@ -88,6 +88,7 @@ const deletePengeluaran = (req, res) => {
 
 	if(id.toString() !== req.body.user_id.toString()){
     return res.status(401).json({
+      status: "Failed",
       message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
     })
   }
