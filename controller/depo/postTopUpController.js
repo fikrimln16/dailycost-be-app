@@ -2,7 +2,7 @@ const depoModel = require('../../models/depo');
 
 /**
  * @swagger
- * /api/topup:
+ * /api/topup/{id}:
  *   post:
  *     summary: Menambahkan saldo depo pengguna
  *     tags:
@@ -10,6 +10,13 @@ const depoModel = require('../../models/depo');
  *     description: Endpoint untuk menambahkan saldo depo pengguna
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID pengguna
+ *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -78,7 +85,7 @@ const depoModel = require('../../models/depo');
  *                   type: string
  *             example:
  *               status: "Failed"
- *               message: "Mohon masukkan data user_id yang benar"
+ *               message: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
  *       500:
  *         description: Terjadi kesalahan saat mengubah saldo depo
  *         content:
@@ -96,6 +103,15 @@ const depoModel = require('../../models/depo');
  */
 const topup = (req, res) => {
   const { id, uang_gopay, uang_cash, uang_rekening } = req.body;
+
+  const user_id = req.params.id
+
+  if(user_id.toString() !== req.body.id.toString()){
+    return res.status(401).json({
+      status: "Failed",
+      message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
+    })
+  }
 
   depoModel.topUp(id, uang_gopay, uang_cash, uang_rekening, (error, saldoUser, statusCode) => {
     
