@@ -6,6 +6,6 @@ const getpemasukanById = require("../controller/pemasukan/getPemasukanController
 const postPemasukan = require("../controller/pemasukan/postPemasukanController")
 
 router.get("/pemasukan/:id", verifyToken, getpemasukanById)
-router.post("/pemasukan", verifyToken, postPemasukan)
+router.post("/pemasukan/:id", verifyToken, postPemasukan)
 
 module.exports = router

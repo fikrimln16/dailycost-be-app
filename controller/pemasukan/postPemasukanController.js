@@ -2,7 +2,7 @@ const pemasukanModel = require("../../models/pemasukan");
 
 /**
  * @swagger
- * /api/pemasukan:
+ * /api/pemasukan/{id}:
  *   post:
  *     summary: Melakukan Pemasukan Dana
  *     tags :
@@ -10,6 +10,13 @@ const pemasukanModel = require("../../models/pemasukan");
  *     description: Melakukan Pemasukan Dana ke dalam database
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID pengguna
+ *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -100,7 +107,7 @@ const pemasukanModel = require("../../models/pemasukan");
  *               error1:
  *                 value:
  *                   status: Failed
- *                   message: Pastikan masukkan user_id yang benar
+ *                   message: Akses ditolak, tidak dapat mengambil dengan user_id tersebut!
  *       500:
  *         description: Terjadi kesalahan pada server saat melakukan pembelanjaan
  *         content:
@@ -119,18 +126,20 @@ const pemasukanModel = require("../../models/pemasukan");
 const pemasukan = (req, res) => {
   const { nama, tanggal, jumlah, pembayaran, user_id, kategori } = req.body;
   
+  const id = req.params.id
+
+  if(id.toString() !== req.body.user_id.toString()){
+    return res.status(401).json({
+      status: "Failed",
+      message: "Akses ditolak, tidak dapat mengambil dengan user_id tersebut!"
+    })
+  }
+
   pemasukanModel.postPemasukan(nama, tanggal, jumlah, pembayaran, user_id, kategori.toLowerCase(), (error, result, statusCode) => {
     if(statusCode==400){
       return res.status(400).json({
         status: 'Failed',
         message: "Terjadi kesalahan pada input, mohon masukkan data yang benar!, Metode pembayaran tidak valid, mohon masukkan data seperti `GOPAY`, `CASH`, atau `REKENING`"
-      });
-    }
-
-    if(statusCode==401){
-      return res.status(401).json({
-        status: 'Failed',
-        message: 'Pastikan masukkan user_id yang benar',
       });
     }
     

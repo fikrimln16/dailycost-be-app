@@ -30,7 +30,7 @@ const pemasukanModel = require("../../models/pemasukan")
  *                 message:
  *                   type: string
  *                   example: Berhasil input pemasukan dengan user id 1
- *                 results:
+ *                 data:
  *                   type: array
  *                   items:
  *                     type: object
