@@ -9,6 +9,13 @@ const dbConfig = {
   database: 'daily-cost',
 };
 
+// const dbConfig = {
+//   host: 'localhost',
+//   user: 'dailyco1_fikri',
+//   password: '@Fikrimln16',
+//   database: 'dailyco1_dailycost_db',
+// };
+
 // Buat koneksi database
 const db = mysql.createConnection(dbConfig);
 
